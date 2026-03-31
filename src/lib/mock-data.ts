@@ -1,0 +1,38 @@
+import type { Wish, Category, WishStats } from "./types";
+
+export const mockWishes: Wish[] = [
+  { id: "1", name: "Sushi Tei — Q7", category: "Restaurants", categoryEmoji: "🍽️", owner: "me", status: "pending", date: "Mar 15" },
+  { id: "2", name: "Đà Lạt Trip 🌸", category: "Travel", categoryEmoji: "✈️", owner: "boo", status: "done", date: "Feb 28" },
+  { id: "3", name: "AirPods Pro Max", category: "Shopping", categoryEmoji: "🛍️", owner: "me", status: "pending", date: "Mar 12" },
+  { id: "4", name: "Watch Spirited Away together", category: "Movies", categoryEmoji: "🎬", owner: "boo", status: "pending", date: "Mar 10" },
+  { id: "5", name: "Cooking Class — Italian", category: "Activities", categoryEmoji: "🎮", owner: "me", status: "done", date: "Mar 8" },
+  { id: "6", name: "Kindle Paperwhite", category: "Books", categoryEmoji: "📚", owner: "boo", status: "pending", date: "Mar 5" },
+  { id: "7", name: "Yoga mat + blocks set", category: "Fitness", categoryEmoji: "💪", owner: "me", status: "pending", date: "Mar 1" },
+  { id: "8", name: "Phú Quốc weekend getaway", category: "Travel", categoryEmoji: "✈️", owner: "boo", status: "pending", date: "Feb 25" },
+  { id: "9", name: "IKEA bookshelf — KALLAX", category: "Home", categoryEmoji: "🏠", owner: "me", status: "pending", date: "Feb 20" },
+  { id: "10", name: "Date night at The Deck", category: "Restaurants", categoryEmoji: "🍽️", owner: "boo", status: "done", date: "Feb 14" },
+  // Extra items to simulate 108 total
+  { id: "11", name: "Bún chả Hà Nội", category: "Restaurants", categoryEmoji: "🍽️", owner: "me", status: "pending", date: "Feb 10" },
+  { id: "12", name: "Nha Trang snorkeling", category: "Travel", categoryEmoji: "✈️", owner: "boo", status: "pending", date: "Feb 5" },
+  { id: "13", name: "Nintendo Switch game", category: "Shopping", categoryEmoji: "🛍️", owner: "me", status: "done", date: "Jan 30" },
+  { id: "14", name: "Your Name movie rewatch", category: "Movies", categoryEmoji: "🎬", owner: "boo", status: "done", date: "Jan 25" },
+  { id: "15", name: "Rock climbing session", category: "Activities", categoryEmoji: "🎮", owner: "me", status: "pending", date: "Jan 20" },
+];
+
+export const mockCategories: Category[] = [
+  { emoji: "🎁", name: "All Wishes", count: 108 },
+  { emoji: "🍽️", name: "Restaurants", count: 24 },
+  { emoji: "✈️", name: "Travel", count: 18 },
+  { emoji: "🎬", name: "Movies", count: 15 },
+  { emoji: "🛍️", name: "Shopping", count: 14 },
+  { emoji: "🎮", name: "Activities", count: 12 },
+  { emoji: "📚", name: "Books", count: 10 },
+  { emoji: "🏠", name: "Home", count: 8 },
+  { emoji: "💪", name: "Fitness", count: 7 },
+];
+
+export const mockStats: WishStats = {
+  total: 108,
+  done: 42,
+  pending: 66,
+};

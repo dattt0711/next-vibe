@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
+import { QueryProvider } from "@/providers/query-provider";
 import "./globals.css";
 
 const geist = Geist({
@@ -27,7 +28,9 @@ export default function RootLayout({
       lang="vi"
       className={`${geist.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="h-full">{children}</body>
+      <body className="h-full">
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }
