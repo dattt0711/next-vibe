@@ -160,7 +160,10 @@ export default function LocationContent({
                 {loc.name}
               </TableCell>
               <TableCell className="text-xs text-duckie-brown">
-                {loc.typeEmoji} {loc.type}
+                <span className="inline-flex items-center gap-1.5">
+                  <img src={loc.typeEmoji} alt={loc.type} width={16} height={16} className="inline-block" />
+                  {loc.type}
+                </span>
               </TableCell>
               <TableCell className="text-xs text-duckie-dark">
                 <span className="inline-flex items-center gap-1.5">

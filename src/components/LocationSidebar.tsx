@@ -97,7 +97,8 @@ export default function LocationSidebar({
                   isActive ? "font-bold" : "font-medium"
                 }`}
               >
-                {cat.emoji} {cat.name}
+                <img src={cat.emoji} alt={cat.name} width={14} height={14} className="inline-block mr-1.5 align-middle" />
+                {cat.name}
               </span>
               <span
                 className={`font-mono text-[11px] ${

@@ -3,11 +3,16 @@
 import { useState } from "react";
 import { useWishes } from "@/hooks/use-wishes";
 import { useLocations } from "@/hooks/use-locations";
+import { useIsMobile } from "@/hooks/use-mobile";
 import Header, { type ActiveTab } from "@/components/Header";
+import MobileHeader from "@/components/MobileHeader";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import Sidebar from "@/components/Sidebar";
 import LocationSidebar from "@/components/LocationSidebar";
 import MainContent from "@/components/MainContent";
 import LocationContent from "@/components/LocationContent";
+import MobileWishContent from "@/components/MobileWishContent";
+import MobileLocationContent from "@/components/MobileLocationContent";
 import BadgesContent from "@/components/BadgesContent";
 import { mockBadges, mockBadgeStats } from "@/lib/mock-badges";
 import type { WishFilters, LocationFilters } from "@/lib/types";
@@ -37,6 +42,7 @@ export default function WishesPage() {
   const [locationFilters, setLocationFilters] = useState<LocationFilters>(
     defaultLocationFilters
   );
+  const isMobile = useIsMobile();
 
   const { data: wishData, isLoading: wishLoading } = useWishes(wishFilters);
   const { data: locData, isLoading: locLoading } =
@@ -59,6 +65,46 @@ export default function WishesPage() {
   const locCategories = locData?.categories ?? [];
   const locations = locData?.locations ?? [];
   const locTotal = locData?.total ?? 0;
+
+  if (isMobile) {
+    return (
+      <div className="flex flex-col h-full bg-duckie-bg">
+        <MobileHeader />
+        <div className="flex flex-1 min-h-0">
+          {activeTab === "wishes" && (
+            <MobileWishContent
+              wishes={wishes}
+              total={wishTotal}
+              stats={wishStats}
+              categories={wishCategories}
+              filters={wishFilters}
+              onFilterChange={handleWishFilterChange}
+              isLoading={wishLoading}
+            />
+          )}
+          {activeTab === "locations" && (
+            <MobileLocationContent
+              locations={locations}
+              total={locTotal}
+              stats={locStats}
+              categories={locCategories}
+              filters={locationFilters}
+              onFilterChange={handleLocationFilterChange}
+              isLoading={locLoading}
+            />
+          )}
+          {activeTab === "badges" && (
+            <BadgesContent
+              badges={mockBadges}
+              stats={mockBadgeStats}
+              onBack={() => setActiveTab("wishes")}
+            />
+          )}
+        </div>
+        <MobileBottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full bg-duckie-bg">
