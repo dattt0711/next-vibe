@@ -1,5 +1,5 @@
 export type WishStatus = "pending" | "done";
-export type WishOwner = "me" | "boo";
+export type WishOwner = "chún" | "em bé";
 
 export interface Wish {
   id: string;
@@ -39,4 +39,65 @@ export interface WishListResponse {
   perPage: number;
   stats: WishStats;
   categories: Category[];
+}
+
+// Location types
+export type LocationStatus = "want_to_go" | "visited";
+export type LocationOwner = "anh" | "em";
+
+export interface Location {
+  id: string;
+  name: string;
+  type: string;
+  typeEmoji: string;
+  proposedBy: LocationOwner;
+  status: LocationStatus;
+  date: string;
+}
+
+export interface LocationCategory {
+  emoji: string;
+  name: string;
+  count: number;
+}
+
+export interface LocationStats {
+  total: number;
+  visited: number;
+  wantToGo: number;
+}
+
+export interface LocationFilters {
+  search: string;
+  type: string | null;
+  proposedBy: LocationOwner | null;
+  status: LocationStatus | null;
+  page: number;
+  perPage: number;
+}
+
+export interface LocationListResponse {
+  locations: Location[];
+  total: number;
+  page: number;
+  perPage: number;
+  stats: LocationStats;
+  categories: LocationCategory[];
+}
+
+// Badge types
+export interface Badge {
+  id: string;
+  emoji: string;
+  icon: string;
+  name: string;
+  description: string;
+  unlocked: boolean;
+  date: string | null;
+}
+
+export interface BadgeStats {
+  total: number;
+  rare: number;
+  currentStreak: number;
 }

@@ -1,6 +1,7 @@
 import { config } from "./config";
 import { mockWishes, mockCategories, mockStats } from "./mock-data";
-import type { WishFilters, WishListResponse } from "./types";
+import { mockLocations, mockLocationCategories, mockLocationStats } from "./mock-locations";
+import type { WishFilters, WishListResponse, LocationFilters, LocationListResponse } from "./types";
 
 async function delay(ms = 300) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -67,4 +68,48 @@ export async function fetchWishes(
     return fetchWishesMock(filters);
   }
   return fetchWishesReal(filters);
+}
+
+async function fetchLocationsMock(
+  filters: LocationFilters
+): Promise<LocationListResponse> {
+  await delay();
+
+  let filtered = [...mockLocations];
+
+  if (filters.search) {
+    const q = filters.search.toLowerCase();
+    filtered = filtered.filter((l) => l.name.toLowerCase().includes(q));
+  }
+
+  if (filters.type && filters.type !== "Tất cả") {
+    filtered = filtered.filter((l) => l.type === filters.type);
+  }
+
+  if (filters.proposedBy) {
+    filtered = filtered.filter((l) => l.proposedBy === filters.proposedBy);
+  }
+
+  if (filters.status) {
+    filtered = filtered.filter((l) => l.status === filters.status);
+  }
+
+  const total = filters.type ? filtered.length : mockLocationStats.total;
+  const start = (filters.page - 1) * filters.perPage;
+  const paged = filtered.slice(start, start + filters.perPage);
+
+  return {
+    locations: paged,
+    total,
+    page: filters.page,
+    perPage: filters.perPage,
+    stats: mockLocationStats,
+    categories: mockLocationCategories,
+  };
+}
+
+export async function fetchLocations(
+  filters: LocationFilters
+): Promise<LocationListResponse> {
+  return fetchLocationsMock(filters);
 }

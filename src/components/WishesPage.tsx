@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import { useWishes } from "@/hooks/use-wishes";
-import Header from "@/components/Header";
+import { useLocations } from "@/hooks/use-locations";
+import Header, { type ActiveTab } from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
+import LocationSidebar from "@/components/LocationSidebar";
 import MainContent from "@/components/MainContent";
-import type { WishFilters } from "@/lib/types";
+import LocationContent from "@/components/LocationContent";
+import BadgesContent from "@/components/BadgesContent";
+import { mockBadges, mockBadgeStats } from "@/lib/mock-badges";
+import type { WishFilters, LocationFilters } from "@/lib/types";
 
-const defaultFilters: WishFilters = {
+const defaultWishFilters: WishFilters = {
   search: "",
   category: null,
   owner: null,
@@ -16,36 +21,90 @@ const defaultFilters: WishFilters = {
   perPage: 15,
 };
 
-export default function WishesPage() {
-  const [filters, setFilters] = useState<WishFilters>(defaultFilters);
-  const { data, isLoading } = useWishes(filters);
+const defaultLocationFilters: LocationFilters = {
+  search: "",
+  type: null,
+  proposedBy: null,
+  status: null,
+  page: 1,
+  perPage: 10,
+};
 
-  function handleFilterChange(partial: Partial<WishFilters>) {
-    setFilters((prev) => ({ ...prev, ...partial }));
+export default function WishesPage() {
+  const [activeTab, setActiveTab] = useState<ActiveTab>("wishes");
+  const [wishFilters, setWishFilters] =
+    useState<WishFilters>(defaultWishFilters);
+  const [locationFilters, setLocationFilters] = useState<LocationFilters>(
+    defaultLocationFilters
+  );
+
+  const { data: wishData, isLoading: wishLoading } = useWishes(wishFilters);
+  const { data: locData, isLoading: locLoading } =
+    useLocations(locationFilters);
+
+  function handleWishFilterChange(partial: Partial<WishFilters>) {
+    setWishFilters((prev) => ({ ...prev, ...partial }));
   }
 
-  const stats = data?.stats ?? { total: 0, done: 0, pending: 0 };
-  const categories = data?.categories ?? [];
-  const wishes = data?.wishes ?? [];
-  const total = data?.total ?? 0;
+  function handleLocationFilterChange(partial: Partial<LocationFilters>) {
+    setLocationFilters((prev) => ({ ...prev, ...partial }));
+  }
+
+  const wishStats = wishData?.stats ?? { total: 0, done: 0, pending: 0 };
+  const wishCategories = wishData?.categories ?? [];
+  const wishes = wishData?.wishes ?? [];
+  const wishTotal = wishData?.total ?? 0;
+
+  const locStats = locData?.stats ?? { total: 0, visited: 0, wantToGo: 0 };
+  const locCategories = locData?.categories ?? [];
+  const locations = locData?.locations ?? [];
+  const locTotal = locData?.total ?? 0;
 
   return (
     <div className="flex flex-col h-full bg-duckie-bg">
-      <Header />
+      <Header activeTab={activeTab} onTabChange={setActiveTab} />
       <div className="flex flex-1 min-h-0">
-        <Sidebar
-          stats={stats}
-          categories={categories}
-          filters={filters}
-          onFilterChange={handleFilterChange}
-        />
-        <MainContent
-          wishes={wishes}
-          total={total}
-          filters={filters}
-          onFilterChange={handleFilterChange}
-          isLoading={isLoading}
-        />
+        {activeTab === "wishes" && (
+          <>
+            <Sidebar
+              stats={wishStats}
+              categories={wishCategories}
+              filters={wishFilters}
+              onFilterChange={handleWishFilterChange}
+            />
+            <MainContent
+              wishes={wishes}
+              total={wishTotal}
+              filters={wishFilters}
+              onFilterChange={handleWishFilterChange}
+              isLoading={wishLoading}
+            />
+          </>
+        )}
+        {activeTab === "locations" && (
+          <>
+            <LocationSidebar
+              stats={locStats}
+              categories={locCategories}
+              filters={locationFilters}
+              onFilterChange={handleLocationFilterChange}
+            />
+            <LocationContent
+              locations={locations}
+              total={locTotal}
+              filters={locationFilters}
+              onFilterChange={handleLocationFilterChange}
+              isLoading={locLoading}
+            />
+          </>
+        )}
+        {activeTab === "badges" && (
+          <BadgesContent
+            badges={mockBadges}
+            stats={mockBadgeStats}
+            onBack={() => setActiveTab("wishes")}
+          />
+        )}
       </div>
     </div>
   );

@@ -68,9 +68,7 @@ export default function CelebrationModal({
 
             {/* Hero section */}
             <div className="flex flex-col items-center gap-5 px-8 pb-8">
-              <div className="flex items-center justify-center w-[100px] h-[100px] bg-duckie-primary border-3 border-duckie-black">
-                <span className="text-5xl">🐥</span>
-              </div>
+              <img src="/icons/celebration-duck.png" alt="Duckie" className="w-[100px] h-[100px]" />
               <h2 className="font-mono text-[32px] font-black text-duckie-dark tracking-wider">
                 TUYỆT VỜI!
               </h2>
@@ -85,10 +83,10 @@ export default function CelebrationModal({
                 <Check size={14} strokeWidth={3} />
               </div>
               <span className="inline-flex items-center px-2 py-0.5 bg-duckie-primary border-2 border-duckie-black font-mono text-[10px] font-extrabold text-duckie-dark">
-                {wish?.owner === "boo" ? "Boo" : "Duck"}
+                {wish?.owner === "em bé" ? "em bé" : "chún"}
               </span>
               <span className="text-[15px] font-bold text-duckie-dark">
-                {wish?.name} {wish?.categoryEmoji}
+                {wish?.name} {wish?.categoryEmoji && <img src={wish.categoryEmoji} alt="" width={16} height={16} className="inline-block ml-1" />}
               </span>
             </div>
 

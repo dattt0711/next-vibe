@@ -7,7 +7,8 @@ import {
   ArrowUpDown,
   ChevronLeft,
   ChevronRight,
-  CirclePlus,
+  MapPin,
+  Plus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -21,27 +22,42 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import CelebrationModal from "@/components/CelebrationModal";
-import AddWishModal from "@/components/AddWishModal";
-import type { Wish, WishFilters } from "@/lib/types";
+import AddLocationModal from "@/components/AddLocationModal";
+import type { Location, LocationFilters, Wish } from "@/lib/types";
 
-interface MainContentProps {
-  wishes: Wish[];
+interface LocationContentProps {
+  locations: Location[];
   total: number;
-  filters: WishFilters;
-  onFilterChange: (filters: Partial<WishFilters>) => void;
+  filters: LocationFilters;
+  onFilterChange: (filters: Partial<LocationFilters>) => void;
   isLoading: boolean;
 }
 
-export default function MainContent({
-  wishes,
+export default function LocationContent({
+  locations,
   total,
   filters,
   onFilterChange,
   isLoading,
-}: MainContentProps) {
-  const [celebrateWish, setCelebrateWish] = useState<Wish | null>(null);
+}: LocationContentProps) {
+  const [celebrateLocation, setCelebrateLocation] = useState<Location | null>(
+    null
+  );
   const [showAddModal, setShowAddModal] = useState(false);
   const totalPages = Math.ceil(total / filters.perPage);
+
+  // Convert location to wish-like shape for celebration modal
+  const celebrateWish: Wish | null = celebrateLocation
+    ? {
+        id: celebrateLocation.id,
+        name: celebrateLocation.name,
+        category: celebrateLocation.type,
+        categoryEmoji: celebrateLocation.typeEmoji,
+        owner: celebrateLocation.proposedBy === "anh" ? "chún" : "em bé",
+        status: "done",
+        date: celebrateLocation.date,
+      }
+    : null;
 
   function renderPageButtons() {
     const pages: (number | "...")[] = [];
@@ -77,7 +93,7 @@ export default function MainContent({
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-3">
           <span className="font-mono text-xl font-black text-duckie-dark">
-            All Wishes
+            Địa Điểm
           </span>
           <Badge variant="default" className="text-xs font-extrabold">
             {total}
@@ -93,20 +109,20 @@ export default function MainContent({
               <List size={16} className="text-duckie-dark" />
             </button>
           </div>
-          {/* Sort */}
+          {/* Filter */}
           <Button variant="outline" size="default" className="gap-1.5">
-            <ArrowUpDown size={14} />
-            <span className="text-xs font-semibold">Sort</span>
+            <MapPin size={14} />
+            <span className="text-xs font-semibold">Tỉ. Sắp xếp</span>
           </Button>
-{/* Add wish */}
+          {/* Add */}
           <Button
             variant="default"
             size="default"
             className="gap-1.5"
             onClick={() => setShowAddModal(true)}
           >
-            <CirclePlus size={14} />
-            <span className="text-xs font-extrabold">Thêm điều ước</span>
+            <Plus size={14} />
+            <span className="text-xs font-extrabold">Thêm địa điểm</span>
           </Button>
         </div>
       </div>
@@ -118,50 +134,51 @@ export default function MainContent({
             <TableHead className="w-7.5">
               <Checkbox />
             </TableHead>
-            <TableHead className="w-75">WISH NAME</TableHead>
-            <TableHead className="w-35">CATEGORY</TableHead>
-            <TableHead className="w-25">OWNER</TableHead>
-            <TableHead className="w-25">STATUS</TableHead>
-            <TableHead>ADDED</TableHead>
+            <TableHead className="w-75">ĐỊA ĐIỂM</TableHead>
+            <TableHead className="w-35">LOẠI</TableHead>
+            <TableHead className="w-28">ĐỀ XUẤT</TableHead>
+            <TableHead className="w-30">TRẠNG THÁI</TableHead>
+            <TableHead>NGÀY THÊM</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {wishes.map((wish) => (
-            <TableRow key={wish.id}>
+          {locations.map((loc) => (
+            <TableRow key={loc.id}>
               <TableCell>
                 <Checkbox
-                  checked={wish.status === "done"}
-                  onCheckedChange={() => setCelebrateWish(wish)}
+                  checked={loc.status === "visited"}
+                  onCheckedChange={() => setCelebrateLocation(loc)}
                 />
               </TableCell>
               <TableCell
                 className={`font-semibold ${
-                  wish.status === "done"
+                  loc.status === "visited"
                     ? "text-duckie-brown"
                     : "text-duckie-dark"
                 }`}
               >
-                {wish.name}
+                {loc.name}
               </TableCell>
               <TableCell className="text-xs text-duckie-brown">
-                <span className="inline-flex items-center gap-1.5">
-                  <img src={wish.categoryEmoji} alt={wish.category} width={16} height={16} className="inline-block" />
-                  {wish.category}
-                </span>
+                {loc.typeEmoji} {loc.type}
               </TableCell>
               <TableCell className="text-xs text-duckie-dark">
                 <span className="inline-flex items-center gap-1.5">
-                  <img src={wish.owner === "chún" ? "/icons/emoji/duck.png" : "/icons/emoji/boo.png"} alt="" width={16} height={16} className="inline-block" />
-                  {wish.owner === "chún" ? "chún" : "em bé"}
+                  <img src={loc.proposedBy === "anh" ? "/icons/emoji/duck.png" : "/icons/emoji/boo.png"} alt="" width={16} height={16} className="inline-block" />
+                  {loc.proposedBy === "anh" ? "chún" : "em bé"}
                 </span>
               </TableCell>
               <TableCell>
-                <Badge variant={wish.status === "pending" ? "pending" : "done"}>
-                  {wish.status === "pending" ? "Pending" : "Done ✓"}
+                <Badge
+                  variant={
+                    loc.status === "want_to_go" ? "pending" : "done"
+                  }
+                >
+                  {loc.status === "want_to_go" ? "Muốn đi" : "Đã đi ✓"}
                 </Badge>
               </TableCell>
               <TableCell className="text-xs text-duckie-brown">
-                {wish.date}
+                {loc.date}
               </TableCell>
             </TableRow>
           ))}
@@ -170,9 +187,8 @@ export default function MainContent({
 
       {/* Pagination */}
       <div className="flex items-center justify-between w-full">
-        <span className="text-xs text-duckie-brown">
-          Showing {(filters.page - 1) * filters.perPage + 1}-
-          {Math.min(filters.page * filters.perPage, total)} of {total} wishes
+        <span className="text-xs text-duckie-brown font-mono font-semibold">
+          Trang {filters.page} / {totalPages} — {total} địa điểm
         </span>
         <div className="flex items-center gap-1">
           <Button
@@ -200,12 +216,12 @@ export default function MainContent({
           </Button>
         </div>
       </div>
-<CelebrationModal
+      <CelebrationModal
         wish={celebrateWish}
-        open={celebrateWish !== null}
-        onClose={() => setCelebrateWish(null)}
+        open={celebrateLocation !== null}
+        onClose={() => setCelebrateLocation(null)}
       />
-      <AddWishModal
+      <AddLocationModal
         open={showAddModal}
         onClose={() => setShowAddModal(false)}
       />
