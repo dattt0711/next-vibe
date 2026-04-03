@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Search, CirclePlus, ArrowUpDown } from "lucide-react";
-import CelebrationModal from "@/components/CelebrationModal";
-import AddLocationModal from "@/components/AddLocationModal";
+import { Search, ArrowUpDown } from "lucide-react";
+import CelebrationModal from "@/components/shared/CelebrationModal";
+
 import type {
   Location,
   LocationFilters,
@@ -34,7 +34,6 @@ export default function MobileLocationContent({
   const [celebrateLocation, setCelebrateLocation] = useState<Location | null>(
     null
   );
-  const [showAddModal, setShowAddModal] = useState(false);
 
   const celebrateWish: Wish | null = celebrateLocation
     ? {
@@ -44,6 +43,8 @@ export default function MobileLocationContent({
         categoryEmoji: celebrateLocation.typeEmoji,
         owner: celebrateLocation.proposedBy === "anh" ? "chún" : "em bé",
         status: "done",
+        description: "",
+        imageUrl: "",
         date: celebrateLocation.date,
       }
     : null;
@@ -58,7 +59,7 @@ export default function MobileLocationContent({
           <Search size={16} className="text-duckie-brown shrink-0" />
           <input
             type="text"
-            placeholder="Tìm địa điểm..."
+            placeholder="Search locations..."
             className="flex-1 bg-transparent text-sm font-geist text-duckie-dark placeholder:text-duckie-brown outline-none"
             value={filters.search}
             onChange={(e) =>
@@ -78,7 +79,7 @@ export default function MobileLocationContent({
             {stats.total}
           </span>
           <span className="font-mono text-[8px] font-bold tracking-[0.5px] text-duckie-brown">
-            TỔNG
+            TOTAL
           </span>
         </div>
         <div className="flex-1 flex flex-col items-center gap-0.5 p-2 bg-duckie-white border-3 border-duckie-black shadow-[4px_4px_0_var(--duckie-black)]">
@@ -86,7 +87,7 @@ export default function MobileLocationContent({
             {stats.visited}
           </span>
           <span className="font-mono text-[8px] font-bold tracking-[0.5px] text-duckie-brown">
-            ĐÃ ĐI
+            VISITED
           </span>
         </div>
         <div className="flex-1 flex flex-col items-center gap-0.5 p-2 bg-duckie-primary border-3 border-duckie-black shadow-[4px_4px_0_var(--duckie-black)]">
@@ -94,7 +95,7 @@ export default function MobileLocationContent({
             {stats.wantToGo}
           </span>
           <span className="font-mono text-[8px] font-bold tracking-[0.5px] text-duckie-brown">
-            MUỐN ĐI
+            WANT TO GO
           </span>
         </div>
       </div>
@@ -102,7 +103,7 @@ export default function MobileLocationContent({
       {/* Category Chips */}
       <div className="flex items-center gap-1.5 overflow-x-auto">
         {categories.map((cat) => {
-          const isAll = cat.name === "Tất cả";
+          const isAll = cat.name === "All";
           const isActive = isAll ? !filters.type : filters.type === cat.name;
           return (
             <button
@@ -124,7 +125,7 @@ export default function MobileLocationContent({
       </div>
 
       {/* Sort Row */}
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <span className="text-xs text-duckie-brown font-geist">
           {total} địa điểm · Mới nhất
         </span>
@@ -132,7 +133,7 @@ export default function MobileLocationContent({
           <ArrowUpDown size={12} />
           Sắp xếp
         </button>
-      </div>
+      </div> */}
 
       {/* Location List */}
       <div className="flex flex-col border-3 border-duckie-black w-full">
@@ -199,31 +200,17 @@ export default function MobileLocationContent({
                   : "bg-[#FFD93D33] border-duckie-primary text-[#B8860B]"
               }`}
             >
-              {loc.status === "visited" ? "Đã đi ✓" : "Muốn đi"}
+              {loc.status === "visited" ? "Visited ✓" : "Want to go"}
             </div>
           </button>
         ))}
       </div>
 
-      {/* FAB */}
-      <button
-        className="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-5 py-3 bg-duckie-primary border-3 border-duckie-black shadow-[5px_5px_0_var(--duckie-black)] cursor-pointer md:hidden"
-        onClick={() => setShowAddModal(true)}
-      >
-        <CirclePlus size={16} className="text-duckie-black" />
-        <span className="text-[13px] font-[900] text-duckie-black font-geist">
-          Thêm địa điểm
-        </span>
-      </button>
 
       <CelebrationModal
         wish={celebrateWish}
         open={celebrateLocation !== null}
         onClose={() => setCelebrateLocation(null)}
-      />
-      <AddLocationModal
-        open={showAddModal}
-        onClose={() => setShowAddModal(false)}
       />
     </div>
   );

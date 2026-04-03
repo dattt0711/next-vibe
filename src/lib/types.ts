@@ -4,6 +4,8 @@ export type WishOwner = "chún" | "em bé";
 export interface Wish {
   id: string;
   name: string;
+  description: string | null;
+  imageUrl: string | null;
   category: string;
   categoryEmoji: string;
   owner: WishOwner;
@@ -53,6 +55,9 @@ export interface Location {
   proposedBy: LocationOwner;
   status: LocationStatus;
   date: string;
+  address: string | null;
+  note: string | null;
+  locationImg: string | null;
 }
 
 export interface LocationCategory {

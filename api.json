@@ -1,0 +1,723 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Wishes API",
+    "version": "1.0.0",
+    "description": "MVP Wishes backend API"
+  },
+  "paths": {
+    "/api/categories": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Get all categories",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "wish",
+                "location"
+              ]
+            },
+            "description": "Filter by category type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of categories"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Create a category",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "type"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Travel"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "wish",
+                      "location"
+                    ],
+                    "example": "wish"
+                  },
+                  "emoji_img": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "/uploads/travel.png"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created category"
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "409": {
+            "description": "Category name already exists for this type"
+          }
+        }
+      }
+    },
+    "/api/categories/{id}": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Get a category by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A category"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Update a category",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "wish",
+                      "location"
+                    ]
+                  },
+                  "emoji_img": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated category"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Category name already exists for this type"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Delete a category",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/api/locations": {
+      "get": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Get all locations",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "proposed_by",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by proposed_by"
+          },
+          {
+            "in": "query",
+            "name": "category_id",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Filter by category"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "visited",
+                "skipped"
+              ]
+            },
+            "description": "Filter by status"
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search by location name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of locations"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Create a location",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "category_id",
+                  "proposed_by"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Cafe Sunset"
+                  },
+                  "category_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "address": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "123 Main St"
+                  },
+                  "proposed_by": {
+                    "type": "string",
+                    "example": "duckie"
+                  },
+                  "note": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "Great coffee"
+                  },
+                  "location_img": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "/uploads/cafe.png"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created location"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/api/locations/{id}": {
+      "get": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Get a location by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A location"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Update a location",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "category_id": {
+                    "type": "integer"
+                  },
+                  "address": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "proposed_by": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "location_img": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "visited",
+                      "skipped"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated location"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Delete a location",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/api/locations/{id}/visit": {
+      "patch": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Mark a location as visited",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Visited location"
+          },
+          "400": {
+            "description": "Already visited"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/api/upload": {
+      "post": {
+        "tags": [
+          "Upload"
+        ],
+        "summary": "Upload an image",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Upload result"
+          },
+          "400": {
+            "description": "No file provided"
+          }
+        }
+      }
+    },
+    "/api/wishes": {
+      "get": {
+        "tags": [
+          "Wishes"
+        ],
+        "summary": "Get all wishes",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "owner",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by owner"
+          },
+          {
+            "in": "query",
+            "name": "category_id",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Filter by category"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "granted",
+                "declined"
+              ]
+            },
+            "description": "Filter by status"
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search by wish name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of wishes"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Wishes"
+        ],
+        "summary": "Create a wish",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "category_id",
+                  "owner"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Visit Japan"
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "Travel to Tokyo"
+                  },
+                  "image_url": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "/uploads/123.png"
+                  },
+                  "category_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "owner": {
+                    "type": "string",
+                    "example": "duckie"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created wish"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/api/wishes/{id}": {
+      "get": {
+        "tags": [
+          "Wishes"
+        ],
+        "summary": "Get a wish by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A wish"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Wishes"
+        ],
+        "summary": "Update a wish",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "image_url": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "category_id": {
+                    "type": "integer"
+                  },
+                  "owner": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "granted",
+                      "declined"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated wish"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Wishes"
+        ],
+        "summary": "Delete a wish",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/api/wishes/{id}/complete": {
+      "patch": {
+        "tags": [
+          "Wishes"
+        ],
+        "summary": "Complete a wish",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Completed wish"
+          },
+          "400": {
+            "description": "Wish already completed"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}

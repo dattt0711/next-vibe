@@ -70,10 +70,10 @@ export default function CelebrationModal({
             <div className="flex flex-col items-center gap-5 px-8 pb-8">
               <img src="/icons/celebration-duck.png" alt="Duckie" className="w-[100px] h-[100px]" />
               <h2 className="font-mono text-[32px] font-black text-duckie-dark tracking-wider">
-                TUYỆT VỜI!
+                AMAZING!
               </h2>
               <p className="text-[15px] italic text-duckie-brown">
-                Bạn đã hoàn thành một điều ước!
+                You've completed a wish!
               </p>
             </div>
 
@@ -91,7 +91,7 @@ export default function CelebrationModal({
             </div>
 
             {/* Stats row */}
-            <div className="flex gap-2 px-5 py-4">
+            {/* <div className="flex gap-2 px-5 py-4">
               <div className="flex-1 flex flex-col items-center justify-center gap-1 h-[100px] border-3 border-duckie-black bg-duckie-bg p-3">
                 <Flame size={20} className="text-duckie-dark" />
                 <span className="font-mono text-[28px] font-black text-duckie-dark">
@@ -119,13 +119,13 @@ export default function CelebrationModal({
                   HOÀN THÀNH
                 </span>
               </div>
-            </div>
+            </div> */}
 
             {/* Quote */}
             <div className="flex justify-center px-5 py-2">
               <p className="text-xs italic text-duckie-brown text-center max-w-[340px]">
-                &ldquo;Cùng nhau hoàn thành từng điều ước nhỏ, xây nên hạnh
-                phúc lớn&rdquo; 🤍
+                &ldquo;Together we fulfill each small wish, building a
+                great happiness&rdquo; 🤍
               </p>
             </div>
 
@@ -134,7 +134,7 @@ export default function CelebrationModal({
 <DialogClose
                 render={
                   <button className="flex-1 flex items-center justify-center gap-2 h-12 bg-duckie-dark border-3 border-duckie-black font-mono text-[13px] font-extrabold text-white tracking-wider cursor-pointer">
-                    TIẾP TỤC
+                    CONTINUE
                   </button>
                 }
               />

@@ -1,30 +1,27 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { useState } from "react";
+import { Search, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import type {
-  LocationCategory,
-  LocationStats,
-  LocationFilters,
-  LocationOwner,
-  LocationStatus,
-} from "@/lib/types";
+import AddCategoryModal from "@/components/wishes/AddCategoryModal";
+import type { Category, WishStats, WishFilters, WishOwner, WishStatus } from "@/lib/types";
 
-interface LocationSidebarProps {
-  stats: LocationStats;
-  categories: LocationCategory[];
-  filters: LocationFilters;
-  onFilterChange: (filters: Partial<LocationFilters>) => void;
+interface SidebarProps {
+  stats: WishStats;
+  categories: Category[];
+  filters: WishFilters;
+  onFilterChange: (filters: Partial<WishFilters>) => void;
 }
 
-export default function LocationSidebar({
+export default function Sidebar({
   stats,
   categories,
   filters,
   onFilterChange,
-}: LocationSidebarProps) {
-  const activeType = filters.type || "Tất cả";
+}: SidebarProps) {
+  const [showAddCategory, setShowAddCategory] = useState(false);
+  const activeCategory = filters.category || "All Wishes";
 
   return (
     <aside className="flex flex-col gap-4 w-65 shrink-0 p-5 bg-duckie-white border-r-3 border-duckie-black font-geist overflow-y-auto">
@@ -35,7 +32,7 @@ export default function LocationSidebar({
           className="absolute left-3 top-1/2 -translate-y-1/2 text-duckie-black pointer-events-none"
         />
         <Input
-          placeholder="Tìm địa điểm..."
+          placeholder="Search wishes..."
           value={filters.search}
           onChange={(e) => onFilterChange({ search: e.target.value, page: 1 })}
           className="pl-9"
@@ -49,40 +46,48 @@ export default function LocationSidebar({
             {stats.total}
           </span>
           <span className="text-[10px] font-semibold text-duckie-black">
-            Tổng
+            Total
           </span>
         </div>
         <div className="flex-1 flex flex-col items-center justify-center gap-0.5 h-14 p-2 bg-duckie-white border-3 border-duckie-black">
-          <span className="font-mono text-lg font-black text-duckie-dark">
-            {stats.visited}
+          <span className="font-mono text-lg font-black text-duckie-black">
+            {stats.done}
           </span>
-          <span className="text-[10px] font-semibold text-duckie-brown">
-            Đã đi
+          <span className="text-[10px] font-semibold text-duckie-black">
+            Done
           </span>
         </div>
         <div className="flex-1 flex flex-col items-center justify-center gap-0.5 h-14 p-2 bg-duckie-white border-3 border-duckie-black">
-          <span className="font-mono text-lg font-black text-duckie-dark">
-            {stats.wantToGo}
+          <span className="font-mono text-lg font-black text-duckie-black">
+            {stats.pending}
           </span>
-          <span className="text-[10px] font-semibold text-duckie-brown">
-            Muốn đi
+          <span className="text-[10px] font-semibold text-duckie-black">
+            Pending
           </span>
         </div>
       </div>
 
       {/* Categories */}
-      <span className="font-mono text-[11px] font-extrabold tracking-[1.5px] text-duckie-brown">
-        LOẠI ĐỊA ĐIỂM
-      </span>
+      <div className="flex items-center justify-between">
+        <span className="font-mono text-[11px] font-extrabold tracking-[1.5px] text-duckie-black">
+          CATEGORIES
+        </span>
+        <button
+          className="flex items-center justify-center w-6 h-6 bg-duckie-primary border-2 border-duckie-black cursor-pointer"
+          onClick={() => setShowAddCategory(true)}
+        >
+          <Plus size={12} className="text-duckie-dark" />
+        </button>
+      </div>
       <div className="flex flex-col gap-0.5 w-full">
         {categories.map((cat) => {
-          const isActive = activeType === cat.name;
+          const isActive = activeCategory === cat.name;
           return (
             <button
               key={cat.name}
               onClick={() =>
                 onFilterChange({
-                  type: cat.name === "Tất cả" ? null : cat.name,
+                  category: cat.name === "All Wishes" ? null : cat.name,
                   page: 1,
                 })
               }
@@ -93,7 +98,7 @@ export default function LocationSidebar({
               }`}
             >
               <span
-                className={`text-xs text-duckie-dark ${
+                className={`text-xs text-duckie-black ${
                   isActive ? "font-bold" : "font-medium"
                 }`}
               >
@@ -101,10 +106,8 @@ export default function LocationSidebar({
                 {cat.name}
               </span>
               <span
-                className={`font-mono text-[11px] ${
-                  isActive
-                    ? "font-extrabold text-duckie-black"
-                    : "font-normal text-duckie-brown"
+                className={`font-mono text-[11px] text-duckie-black ${
+                  isActive ? "font-extrabold" : "font-normal"
                 }`}
               >
                 {cat.count}
@@ -117,15 +120,15 @@ export default function LocationSidebar({
       {/* Divider */}
       <div className="w-full h-0 border-t-2 border-duckie-black" />
 
-      {/* Proposed By */}
-      <span className="font-mono text-[11px] font-extrabold tracking-[1.5px] text-duckie-brown">
-        NGƯỜI ĐỀ XUẤT
+      {/* Owner */}
+      <span className="font-mono text-[11px] font-extrabold tracking-[1.5px] text-duckie-black">
+        OWNER
       </span>
       <div className="flex gap-1.5 w-full">
-        {([null, "anh", "em"] as const).map((value) => {
-          const isActive = filters.proposedBy === value;
+        {([null, "chún", "em bé"] as const).map((value) => {
+          const isActive = filters.owner === value;
           const label =
-            value === null ? "Tất cả" : value === "anh" ? "chún" : "em bé";
+            value === null ? "All" : value === "chún" ? "chún" : "em bé";
           return (
             <Button
               key={label}
@@ -133,10 +136,7 @@ export default function LocationSidebar({
               size="sm"
               className="text-[11px]"
               onClick={() =>
-                onFilterChange({
-                  proposedBy: value as LocationOwner | null,
-                  page: 1,
-                })
+                onFilterChange({ owner: value as WishOwner | null, page: 1 })
               }
             >
               {label}
@@ -149,18 +149,18 @@ export default function LocationSidebar({
       <div className="w-full h-0 border-t-2 border-duckie-black" />
 
       {/* Status */}
-      <span className="font-mono text-[11px] font-extrabold tracking-[1.5px] text-duckie-brown">
-        ĐÃ ĐI CHƯA
+      <span className="font-mono text-[11px] font-extrabold tracking-[1.5px] text-duckie-black">
+        STATUS
       </span>
       <div className="flex gap-1.5 w-full">
-        {([null, "want_to_go", "visited"] as const).map((value) => {
+        {([null, "pending", "done"] as const).map((value) => {
           const isActive = filters.status === value;
           const label =
             value === null
-              ? "Tất cả"
-              : value === "want_to_go"
-                ? "Chưa đi"
-                : "Đã đi";
+              ? "All"
+              : value === "pending"
+                ? "Pending"
+                : "Done";
           return (
             <Button
               key={label}
@@ -168,10 +168,7 @@ export default function LocationSidebar({
               size="sm"
               className="text-[11px]"
               onClick={() =>
-                onFilterChange({
-                  status: value as LocationStatus | null,
-                  page: 1,
-                })
+                onFilterChange({ status: value as WishStatus | null, page: 1 })
               }
             >
               {label}
@@ -179,6 +176,11 @@ export default function LocationSidebar({
           );
         })}
       </div>
+      <AddCategoryModal
+        open={showAddCategory}
+        onClose={() => setShowAddCategory(false)}
+        pageType="wishes"
+      />
     </aside>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
 import { QueryProvider } from "@/providers/query-provider";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const geist = Geist({
@@ -14,8 +15,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Duckie Wishes",
-  description: "Danh sach uoc mo - Duckie Wishes",
+  title: "Our Wishes",
+  description: "Our Wishes",
 };
 
 export default function RootLayout({
@@ -30,6 +31,7 @@ export default function RootLayout({
     >
       <body className="h-full">
         <QueryProvider>{children}</QueryProvider>
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );

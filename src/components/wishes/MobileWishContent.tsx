@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { CirclePlus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import CelebrationModal from "@/components/CelebrationModal";
-import AddWishModal from "@/components/AddWishModal";
+import CelebrationModal from "@/components/shared/CelebrationModal";
+
 import type { Wish, WishFilters, WishStats, Category } from "@/lib/types";
 
 interface MobileWishContentProps {
@@ -28,10 +27,9 @@ export default function MobileWishContent({
   isLoading,
 }: MobileWishContentProps) {
   const [celebrateWish, setCelebrateWish] = useState<Wish | null>(null);
-  const [showAddModal, setShowAddModal] = useState(false);
 
   const ownerFilters = [
-    { value: null, label: "Tất cả" },
+    { value: null, label: "All" },
     { value: "chún" as const, label: "chún" },
     { value: "em bé" as const, label: "em bé" },
   ];
@@ -77,7 +75,7 @@ export default function MobileWishContent({
             {stats.total}
           </span>
           <span className="font-mono text-[8px] font-bold tracking-[0.5px] text-duckie-brown">
-            TỔNG WISH
+            TOTAL
           </span>
         </div>
         <div className="flex-1 flex flex-col items-center gap-1 p-2.5 bg-duckie-white border-3 border-duckie-black shadow-[4px_4px_0_var(--duckie-black)]">
@@ -86,7 +84,7 @@ export default function MobileWishContent({
             {stats.done}
           </span>
           <span className="font-mono text-[8px] font-bold tracking-[0.5px] text-duckie-brown">
-            HOÀN THÀNH
+            DONE
           </span>
         </div>
         <div className="flex-1 flex flex-col items-center gap-1 p-2.5 bg-duckie-primary border-3 border-duckie-black shadow-[4px_4px_0_var(--duckie-black)]">
@@ -95,7 +93,7 @@ export default function MobileWishContent({
             {stats.pending}
           </span>
           <span className="font-mono text-[8px] font-bold tracking-[0.5px] text-duckie-brown">
-            CÒN LẠI
+            REMAINING
           </span>
         </div>
       </div>
@@ -104,7 +102,7 @@ export default function MobileWishContent({
       <div className="flex flex-col gap-1.5 w-full">
         <div className="flex justify-between">
           <span className="text-xs font-bold text-duckie-dark font-geist">
-            Đang thực hiện ước mơ
+            Making wishes come true
           </span>
           <span className="text-xs font-[800] text-duckie-dark font-geist">
             {stats.total > 0
@@ -128,7 +126,7 @@ export default function MobileWishContent({
         {/* Owner Row */}
         <div className="flex items-center gap-1.5 overflow-x-auto">
           <span className="font-mono text-[9px] font-[800] tracking-[2px] text-duckie-black shrink-0">
-            LỌC
+            FILTER
           </span>
           {ownerFilters.map((f) => {
             const isActive = filters.owner === f.value;
@@ -211,7 +209,7 @@ export default function MobileWishContent({
                 height={14}
               />
               <span className="text-sm font-[900] text-duckie-black font-geist">
-                chún thích
+                chún wants
               </span>
               <div className="flex items-center justify-center px-2 py-0.5 bg-[#DBEAFE] border-2 border-duckie-black">
                 <span className="font-mono text-[10px] font-[900] text-duckie-black">
@@ -240,7 +238,7 @@ export default function MobileWishContent({
                 height={14}
               />
               <span className="text-sm font-[900] text-duckie-black font-geist">
-                em bé thích
+                em bé wants
               </span>
               <div className="flex items-center justify-center px-2 py-0.5 bg-[#FFE4E6] border-2 border-duckie-black">
                 <span className="font-mono text-[10px] font-[900] text-duckie-black">
@@ -263,7 +261,7 @@ export default function MobileWishContent({
           <div className="flex flex-col gap-2.5">
             <div className="flex items-center gap-2 px-3.5 py-2.5 bg-duckie-primary border-3 border-duckie-black w-full">
               <span className="text-sm font-[900] text-duckie-black font-geist">
-                ✨ Đã hoàn thành
+                ✨ Completed
               </span>
               <div className="flex items-center justify-center px-2 py-0.5 bg-duckie-primary border-2 border-duckie-black">
                 <span className="font-mono text-[10px] font-[900] text-duckie-black">
@@ -283,25 +281,11 @@ export default function MobileWishContent({
         )}
       </div>
 
-      {/* FAB */}
-      <button
-        className="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-5 py-3 bg-duckie-primary border-3 border-duckie-black shadow-[5px_5px_0_var(--duckie-black)] cursor-pointer md:hidden"
-        onClick={() => setShowAddModal(true)}
-      >
-        <CirclePlus size={16} className="text-duckie-black" />
-        <span className="text-[13px] font-[900] text-duckie-black font-geist">
-          Thêm điều ước
-        </span>
-      </button>
 
       <CelebrationModal
         wish={celebrateWish}
         open={celebrateWish !== null}
         onClose={() => setCelebrateWish(null)}
-      />
-      <AddWishModal
-        open={showAddModal}
-        onClose={() => setShowAddModal(false)}
       />
     </div>
   );

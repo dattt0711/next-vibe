@@ -9,10 +9,10 @@ export default function MobileHeader() {
         <img src="/icons/logo-duck.png" alt="Duckie" className="w-5 h-5" />
       </div>
       <span className="text-base font-[800] text-duckie-black font-geist">
-        Duckie Wishes
+        Our Wishes
       </span>
       <div className="flex-1" />
-      <Menu size={22} className="text-duckie-black" />
+      {/* <Menu size={22} className="text-duckie-black" /> */}
     </header>
   );
 }
