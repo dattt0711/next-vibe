@@ -46,7 +46,7 @@ export default function MainContent({
 
   function handleComplete(wish: Wish) {
     if (wish.status === "done") return;
-    completeWish(Number(wish.id), {
+    completeWish(wish.id, {
       onSuccess: () => setCelebrateWish(wish),
     });
   }

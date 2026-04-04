@@ -5,11 +5,11 @@ import type { Wish, WishStatus, Category, WishFilters, WishListResponse, Locatio
 
 // Raw API wish shape
 interface ApiWish {
-  id: number;
+  id: string;
   name: string;
   description: string | null;
   image_url: string | null;
-  category_id: number;
+  category_id: string;
   owner: string;
   status: string;
   created_at: string;
@@ -174,9 +174,9 @@ async function fetchLocationsMock(
 
 // Raw API location shape
 interface ApiLocation {
-  id: number;
+  id: string;
   name: string;
-  category_id: number;
+  category_id: string;
   address: string | null;
   proposed_by: string;
   note: string | null;
@@ -281,7 +281,7 @@ export async function createCategory(
 }
 
 export interface CategoryItem {
-  id: number;
+  id: string;
   name: string;
   type: string;
   emoji_img: string | null;
@@ -299,7 +299,7 @@ export async function fetchCategories(type?: "wish" | "location"): Promise<Categ
 // Wishes CRUD API
 export interface CreateWishPayload {
   name: string;
-  category_id: number;
+  category_id: string;
   owner: string;
   description?: string | null;
   image_url?: string | null;
@@ -309,7 +309,7 @@ export interface UpdateWishPayload {
   name?: string;
   description?: string | null;
   image_url?: string | null;
-  category_id?: number;
+  category_id?: string;
   owner?: string;
   status?: "pending" | "granted" | "declined";
 }
@@ -328,7 +328,7 @@ export async function createWish(payload: CreateWishPayload): Promise<ApiWish> {
   return json.data ?? json;
 }
 
-export async function updateWish(id: number, payload: UpdateWishPayload): Promise<ApiWish> {
+export async function updateWish(id: string, payload: UpdateWishPayload): Promise<ApiWish> {
   const res = await fetch(`${config.apiBaseUrl}/wishes/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
@@ -342,7 +342,7 @@ export async function updateWish(id: number, payload: UpdateWishPayload): Promis
   return json.data ?? json;
 }
 
-export async function completeWish(id: number): Promise<ApiWish> {
+export async function completeWish(id: string): Promise<ApiWish> {
   const res = await fetch(`${config.apiBaseUrl}/wishes/${id}/complete`, {
     method: "PATCH",
   });
@@ -354,7 +354,7 @@ export async function completeWish(id: number): Promise<ApiWish> {
   return json.data ?? json;
 }
 
-export async function deleteWish(id: number): Promise<void> {
+export async function deleteWish(id: string): Promise<void> {
   const res = await fetch(`${config.apiBaseUrl}/wishes/${id}`, {
     method: "DELETE",
   });
@@ -367,7 +367,7 @@ export async function deleteWish(id: number): Promise<void> {
 // Locations CRUD API
 export interface CreateLocationPayload {
   name: string;
-  category_id: number;
+  category_id: string;
   proposed_by: string;
   address?: string | null;
   note?: string | null;
@@ -388,7 +388,7 @@ export async function createLocation(payload: CreateLocationPayload) {
   return json.data ?? json;
 }
 
-export async function visitLocation(id: number) {
+export async function visitLocation(id: string) {
   const res = await fetch(`${config.apiBaseUrl}/locations/${id}/visit`, {
     method: "PATCH",
   });

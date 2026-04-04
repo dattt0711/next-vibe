@@ -22,7 +22,7 @@ export function useCreateLocation() {
 export function useVisitLocation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => visitLocation(id),
+    mutationFn: (id: string) => visitLocation(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["locations"] });
     },

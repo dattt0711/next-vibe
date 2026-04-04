@@ -24,7 +24,7 @@ interface AddWishModalProps {
 export default function AddWishModal({ open, onClose }: AddWishModalProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [owner, setOwner] = useState<"duckie" | "baby">("duckie");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);

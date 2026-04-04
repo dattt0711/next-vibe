@@ -50,7 +50,7 @@ export default function LocationContent({
 
   function handleVisit(loc: Location) {
     if (loc.status === "visited") return;
-    visitLocation(Number(loc.id), {
+    visitLocation(loc.id, {
       onSuccess: () => setCelebrateLocation(loc),
     });
   }

@@ -30,7 +30,7 @@ export function useCreateWish() {
 export function useUpdateWish() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, payload }: { id: number; payload: UpdateWishPayload }) =>
+    mutationFn: ({ id, payload }: { id: string; payload: UpdateWishPayload }) =>
       updateWish(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["wishes"] });
@@ -41,7 +41,7 @@ export function useUpdateWish() {
 export function useDeleteWish() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => deleteWish(id),
+    mutationFn: (id: string) => deleteWish(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["wishes"] });
     },
@@ -51,7 +51,7 @@ export function useDeleteWish() {
 export function useCompleteWish() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => completeWish(id),
+    mutationFn: (id: string) => completeWish(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["wishes"] });
     },

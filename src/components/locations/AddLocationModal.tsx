@@ -26,7 +26,7 @@ export default function AddLocationModal({
   onClose,
 }: AddLocationModalProps) {
   const [name, setName] = useState("");
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [owner, setOwner] = useState<"duckie" | "baby">("duckie");
   const [address, setAddress] = useState("");
   const [note, setNote] = useState("");
