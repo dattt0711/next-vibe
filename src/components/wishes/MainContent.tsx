@@ -140,6 +140,7 @@ export default function MainContent({
               <TableHead className="w-75">WISH NAME</TableHead>
               <TableHead className="w-35">CATEGORY</TableHead>
               <TableHead className="w-25">OWNER</TableHead>
+              <TableHead className="w-25">BUDGET</TableHead>
               <TableHead className="w-25">STATUS</TableHead>
               <TableHead>ADDED</TableHead>
             </TableRow>
@@ -174,6 +175,9 @@ export default function MainContent({
                     <img src={wish.owner === "chún" ? "/icons/emoji/duck.png" : "/icons/emoji/boo.png"} alt="" width={16} height={16} className="inline-block" />
                     {wish.owner === "chún" ? "chún" : "em bé"}
                   </span>
+                </TableCell>
+                <TableCell className="text-xs text-duckie-dark font-semibold">
+                  {wish.budget != null ? `${wish.budget.toLocaleString("vi-VN")}đ` : "—"}
                 </TableCell>
                 <TableCell>
                   <Badge variant={wish.status === "pending" ? "pending" : "done"}>

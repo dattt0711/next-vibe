@@ -24,6 +24,7 @@ interface AddWishModalProps {
 export default function AddWishModal({ open, onClose }: AddWishModalProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [budget, setBudget] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [owner, setOwner] = useState<"duckie" | "baby">("duckie");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -41,6 +42,7 @@ export default function AddWishModal({ open, onClose }: AddWishModalProps) {
   function reset() {
     setName("");
     setDescription("");
+    setBudget("");
     setSelectedCategoryId(null);
     setOwner("duckie");
     setDropdownOpen(false);
@@ -100,6 +102,7 @@ export default function AddWishModal({ open, onClose }: AddWishModalProps) {
         owner,
         description: description.trim() || null,
         image_url: imageUrl,
+        budget: budget.trim() ? Number(budget) : null,
       });
 
       toast.success("Wish created successfully!");
@@ -166,6 +169,20 @@ export default function AddWishModal({ open, onClose }: AddWishModalProps) {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="h-22 p-3.5 bg-duckie-white border-2 border-duckie-black text-sm font-geist text-duckie-dark placeholder:text-duckie-brown outline-none resize-none focus:ring-2 focus:ring-duckie-primary"
+              />
+            </div>
+
+            {/* Budget field */}
+            <div className="flex flex-col gap-1.5 w-full">
+              <label className="font-mono text-xs font-bold text-duckie-brown">
+                Budget (optional)
+              </label>
+              <input
+                type="number"
+                placeholder="e.g. 500000"
+                value={budget}
+                onChange={(e) => setBudget(e.target.value)}
+                className="h-12 px-3.5 bg-duckie-white border-2 border-duckie-black text-sm font-geist text-duckie-dark placeholder:text-duckie-brown outline-none focus:ring-2 focus:ring-duckie-primary"
               />
             </div>
 

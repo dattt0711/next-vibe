@@ -6,6 +6,7 @@ export interface Wish {
   name: string;
   description: string | null;
   imageUrl: string | null;
+  budget: number | null;
   category: string;
   categoryEmoji: string;
   owner: WishOwner;

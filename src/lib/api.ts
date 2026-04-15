@@ -9,6 +9,7 @@ interface ApiWish {
   name: string;
   description: string | null;
   image_url: string | null;
+  budget: number | null;
   category_id: string;
   owner: string;
   status: string;
@@ -85,6 +86,7 @@ async function fetchWishesReal(
     name: w.name,
     description: w.description,
     imageUrl: resolveUploadUrl(w.image_url),
+    budget: w.budget ?? null,
     category: w.category_name,
     categoryEmoji: resolveUploadUrl(w.category_emoji) || "/icons/emoji/duck.png",
     owner: w.owner === "duckie" ? "chún" as const : "em bé" as const,
@@ -303,12 +305,14 @@ export interface CreateWishPayload {
   owner: string;
   description?: string | null;
   image_url?: string | null;
+  budget?: number | null;
 }
 
 export interface UpdateWishPayload {
   name?: string;
   description?: string | null;
   image_url?: string | null;
+  budget?: number | null;
   category_id?: string;
   owner?: string;
   status?: "pending" | "granted" | "declined";
