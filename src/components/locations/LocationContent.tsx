@@ -66,6 +66,7 @@ export default function LocationContent({
         status: "done",
         description: null,
         imageUrl: null,
+        budget: null,
         date: celebrateLocation.date,
       }
     : null;

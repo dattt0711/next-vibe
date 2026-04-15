@@ -45,6 +45,7 @@ export default function MobileLocationContent({
         status: "done",
         description: "",
         imageUrl: "",
+        budget: null,
         date: celebrateLocation.date,
       }
     : null;
